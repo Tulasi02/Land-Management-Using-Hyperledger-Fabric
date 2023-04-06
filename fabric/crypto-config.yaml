@@ -1,0 +1,55 @@
+---
+OrdererOrgs:
+  - Name: Orderer
+    Domain: example.com
+    Specs:
+      - Hostname: orderer
+
+PeerOrgs:
+  - Name: Org1
+    Domain: org1.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1
+    Crypto:
+      CertificateAuthorities:
+        - Name: ca-org1
+          CommonName: ca-org1.example.com
+          Country: US
+          Province: California
+          Locality: San Francisco
+          OrganizationalUnit: Fabric
+          StreetAddress: 1 Market St
+          PostalCode: 94105
+          SigningAlgorithm: ecdsa
+          HashAlgorithm: SHA2
+      PeerOrg1:
+        # The first peer
+        Hostname: peer0
+        SANS:
+          - "localhost"
+          - "peer0.org1.example.com"
+        CommonName: peer0.org1.example.com
+        Country: US
+        Province: California
+        Locality: San Francisco
+        OrganizationalUnit: Fabric
+        StreetAddress: 1 Market St
+        PostalCode: 94105
+        SigningAlgorithm: ecdsa
+        HashAlgorithm: SHA2
+      Admin:
+        CommonName: Admin@org1.example.com
+        SANS:
+          - "localhost"
+          - "admin.org1.example.com"
+        Country: US
+        Province: California
+        Locality: San Francisco
+        OrganizationalUnit: Fabric
+        StreetAddress: 1 Market St
+        PostalCode: 94105
+        SigningAlgorithm: ecdsa
+        HashAlgorithm: SHA2

@@ -1,0 +1,111 @@
+---
+Organizations:
+  - &org1
+    Name: Org1MSP
+    ID: Org1MSP
+    MSPDir: crypto-config/peerOrganizations/org1.example.com/msp
+    AnchorPeers:
+      - Host: peer0.org1.example.com
+        Port: 7051
+
+Orderer: &orderer
+  OrdererType: solo
+  Addresses:
+    - orderer.example.com:7050
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Organizations:
+
+Application: &app
+  Organizations:
+    - *org1
+  Capabilities:
+    <<: *ChannelCapabilities
+  Policies:
+    Readers:
+      Type: Signature
+      Rule: "OR('Org1MSP.member')"
+    Writers:
+      Type: Signature
+      Rule: "OR('Org1MSP.member')"
+    Admins:
+      Type: Signature
+      Rule: "OR('Org1MSP.admin')"
+  ACLs: &ACLsDefault
+    lscc/ChaincodeExists: /Channel/Application/Readers
+    lscc/GetDeploymentSpec: /Channel/Application/Readers
+    lscc/GetChaincodeData: /Channel/Application/Readers
+    lscc/GetInstantiatedChaincodes: /Channel/Application/Readers
+    qscc/GetChainInfo: /Channel/Application/Readers
+    qscc/GetBlockByNumber: /Channel/Application/Readers
+    qscc/GetBlockByHash: /Channel/Application/Readers
+    qscc/GetTransactionByID: /Channel/Application/Readers
+    qscc/GetBlockByTxID: /Channel/Application/Readers
+  Organizations:
+    - *org1
+  Capabilities:
+    <<: *ApplicationCapabilities
+  LandChannel:
+    Consortium: SampleConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *app
+      Organizations:
+        - *org1
+    Capabilities:
+      <<: *ChannelCapabilities
+    Policies:
+      <<: *ChannelPolicies
+    AnchorPeers:
+      - Host: peer0.org1.example.com
+        Port: 7051
+
+Profiles:
+  OneOrgChannel:
+    Consortium: SampleConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *app
+      Organizations:
+        - *org1
+    Capabilities:
+      <<: *ChannelCapabilities
+    Policies:
+      <<: *ChannelPolicies
+    AnchorPeers:
+      - Host: peer0.org1.example.com
+        Port: 7051
+
+  SampleConsortium:
+    Consortium:
+      Name: SampleConsortium
+      Organizations:
+        - *org1
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+ChannelDefaults:
+  Policies:
+    # Who may invoke the 'Deliver' API
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    # Who may invoke the 'Broadcast' API
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    # By default, who may modify elements at this config level
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Channel

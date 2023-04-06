@@ -1,0 +1,5 @@
+# Name of the channel
+ChannelName: mychannel
+
+# Channel configuration
+ChannelConfigPath: ./channel-artifacts/mychannel.tx

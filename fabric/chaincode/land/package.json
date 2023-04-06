@@ -1,0 +1,11 @@
+{
+    "name": "land-chaincode",
+    "version": "1.0.0",
+    "description": "Hyperledger Fabric chaincode for land management",
+    "main": "index.js",
+    "dependencies": {
+      "leveldb": "^0.21.0",
+      "fabric-shim": "^2.4.2"
+    }
+  }
+  
